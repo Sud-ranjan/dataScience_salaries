@@ -116,6 +116,17 @@ from sklearn.metrics import mean_absolute_error
 print('Linear Regression mse = ',mean_absolute_error(y_test,y_pred_lm))
 print('Lasso Regression mse = ',mean_absolute_error(y_test,y_pred_lm_lasso))
 print('Random Forest mse = ',mean_absolute_error(y_test,y_pred_rf))
-
+# print(grid_search.best_estimator_)
 
 print('Combined Random Forest with lasso mse = ',mean_absolute_error(y_test,(y_pred_rf+y_pred_lm_lasso)/2))
+
+import pickle
+
+with open('./flaskAPI/models/trained_ml_model.pkl', 'wb') as f:
+    pickle.dump(grid_search.best_estimator_,f)
+
+print("successfully exported model. \n Model details:", grid_search.best_estimator_)
+
+
+# Creating x_test separately to test flask app:
+X_test.to_csv('X_test.csv')
