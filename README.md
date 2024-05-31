@@ -19,6 +19,8 @@ _Based on glassdoor data_
 - **Scraper Github**: https://github.com/arapfaik/scraping-glassdoor-selenium
   (note this needs to be updated for scraping data)
 
+### Project Details
+
 #### 1. Web Scraping
 
 - Scraping is buggy in the current build. So scraped data has been used for progressing. Scraper needs to be rebuilt for streaming data into the model.
