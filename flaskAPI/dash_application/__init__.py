@@ -2,7 +2,9 @@ from dash import Dash, html, dcc, callback, Output, Input
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
 
+external_stylesheets = [dbc.themes.BOOTSTRAP]
 df = pd.read_csv('/Users/sudhanshuranjan/Documents/dataScience_salaries/explored_data_for_model.csv')
     
 query_df = df.groupby('Sector').agg({
@@ -44,21 +46,54 @@ fig_scatter.update_layout(
 )
 
 def create_dash_app(flask_server):
-    dash_app = Dash(__name__, server=flask_server, url_base_pathname='/dashboard/')    
-    dash_app.layout = html.Div([
-        html.H1(children='Data Science Salaries', style={'textAlign':'center'}),
-        dcc.Dropdown(df['job_title_simplified'].unique(), 'data scientist', id='job_title_selection'),
-        dcc.Graph(
-            id='sector_wise_salaries',
-            figure=fig_scatter,
-            style={'width': '80%', 'height': '800px', 'margin': 'auto'}        
+    dash_app = Dash(__name__, server=flask_server, url_base_pathname='/dashboard/', external_stylesheets=external_stylesheets)    
+    # dash_app.layout = html.Div([
+    #     html.H1(children='Data Science Salaries', style={'textAlign':'center'}),
+    #     dcc.Dropdown(df['job_title_simplified'].unique(), 'data scientist', id='job_title_selection'),
+    #     dbc.Row(
+    #         [
+    #             dbc.Col(
+    #                 dcc.Graph(
+    #                     id='sector_wise_salaries',
+    #                     figure=fig_scatter
+    #                     # style={'width': '80%', 'height': '800px', 'margin': 'auto'}        
+    #                 ),width=6
+    #             ),
+    #             dbc.Col(
+    #                 dcc.Graph(
+    #                     id='avg_salaries_in_states',
+    #                     figure=fig_map
+    #                     # style={'width': '80%', 'height': '800px', 'margin': 'auto'}        
+    #                 ),width=6
+    #             ),
+    #         ],
+    #     )
+    # ])
+    dash_app.layout = dbc.Container([
+    html.H1(children='Data Science Salaries', style={'textAlign':'center'}),
+    dcc.Dropdown(df['job_title_simplified'].unique(), 'data scientist', id='job_title_selection'),
+    dbc.Row([
+        dbc.Col(
+            dcc.Graph(
+                id='sector_wise_salaries',
+                figure=fig_scatter
+                # style={'width': '80%', 'height': '100%', 'margin': 'auto'}        
+            ),
+            width=6
         ),
-        dcc.Graph(
-            id='avg_salaries_in_states',
-            figure=fig_map,
-            style={'width': '80%', 'height': '800px', 'margin': 'auto'}        
-        )
+        dbc.Col(
+            dcc.Graph(
+                id='avg_salaries_in_states',
+                figure=fig_map
+                # style={'width': '80%', 'height': '100%', 'margin': 'auto'}        
+            ),
+            width=6
+        ),
     ])
+])
+
+
+
     @dash_app.callback(
     [Output('sector_wise_salaries', 'figure'),
      Output('avg_salaries_in_states', 'figure')],
