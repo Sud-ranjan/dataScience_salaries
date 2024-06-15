@@ -12,7 +12,7 @@ data_single_row = list(test_data.iloc[row_number,:])
 
 PARAMS = {'Content-type': 'application/json '}
 data = {'input':data_single_row}
-
+ 
 r = requests.get(URL, headers=PARAMS, json = data)
 result = r.json()
 
