@@ -31,10 +31,8 @@ def preprocessor_for_predicting(df_form):
 server = Flask(__name__)
 dash_app = create_dash_app(server)
 
-
 @server.route('/')
 def index():
-    name = 'Admin'
     usa_geo_data = read_city_state_data()
     print("Homepage requested")
     return render_template('index.html', data = usa_geo_data)
@@ -55,9 +53,8 @@ def read_form():
 
 
     r = requests.get(URL, headers=PARAMS, json = data)      #Requesting prediction passing jsonified data
-    print(r)
-    result = r.json()
-    return result
+    prediction_data = r.json()
+    return render_template('prediction.html', data = prediction_data)
 
 @server.route('/dash')
 def dash_page():
@@ -69,16 +66,19 @@ def predict():
     # stub input features
     request_json = request.get_json()                       #parsing json from the request
     X = request_json['input']                               #parsing out the x_test data from request json
-    
-    print(X)
     x_test = pd.read_json(X)
-    print(x_test)
-
     model = load_models()
     prediction = model.predict(x_test)[0]
-    print(prediction)
-    response = json.dumps({'response': prediction})
+    error = 0.15
+    upper_bound = prediction * (1-error)
+    lower_bound = prediction * (1+error)
 
+    prediction_dict = {
+        'prediction': round(prediction),
+        'lower_limit': round(upper_bound),
+        'upper_limit': round(lower_bound)
+    }
+    response = json.dumps(prediction_dict)
     return response
 
 if __name__ == '__main__':
