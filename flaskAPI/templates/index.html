@@ -10,25 +10,26 @@
 <body> 
     <div class="container">
     <h3 class="text-left py-5">Predict Job Salary</h3> 
-    <br>
     <form action="{{ url_for('read_form')}}" method="post">
         <div class="row">  
+            <hr>
             <div class="col-md-4">        
+                <p><b>Enter Job Details</b></p>
                 <label for="jobTitle" class="form-label">Job Title:</label>
-                <input type="text" class = "form-control" id="jobTitle" name="jobTitle" required>
+                <input type="text" class = "form-control" id="jobTitle" name="jobTitle" maxlength = "50" required>
 
                 <label for="jobDescription" class="form-label">Job Description:</label>
-                <textarea class = "form-control" id="jobDescription" name="jobDescription" rows="4" required></textarea>
+                <textarea class = "form-control" id="jobDescription" name="jobDescription" rows="8" maxlength = "2500" required></textarea>
 
                 <label for="rating" class="form-label">Rating (1-5):</label>
                 <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" step="0.1" required>
 
                 <label for="companyName" class="form-label">Company Name:</label>
-                <input type="text" class="form-control" id="companyName" name="companyName" required>
+                <input type="text" class="form-control" id="companyName" name="companyName" maxlength = "50" required>
 
                 <label for="state" class="form-label">State:</label>
                 <select class="form-control" id="state" name="state" required>
-                    <option value="">Select a state</option>
+                    <option value="">Select Job state</option>
                     {% for state in data.get('states'):%}
                     <option value={{state}}>{{state}}</option>
                     {% endfor %}
@@ -36,27 +37,27 @@
 
                 <label for="city" class="form-label">City:</label>
                 <select id="city" class="form-control" name="city" required>
-                    <option value="">Select a city</option>
+                    <option value="">Select Job city</option>
                     {% for city in data.get('cities'):%}
                     <option value={{city}}>{{city}}</option>
                     {% endfor %}
                 </select>
-                <div class="form-check form-switch py-3"> 
+                <!-- <div class="form-check form-switch py-3"> 
                     <input class="form-check-input" type="checkbox" role="switch" id="switch" checked> 
                     <label class="form-check-label" for="switch">Subscribe to Newsletter</label> 
-                </div> 
+                </div>  -->
             </div>
             <div class="col-md-4">
                     <label for="hqState" class="form-label" >Headquarters State:</label>
                     <select class="form-control" id="hqState" name="hqState" required>
-                        <option value="">Select a state</option>
+                        <option value="">Select Hq state</option>
                         {% for state in data.get('states'):%}
                         <option value={{state}}>{{state}}</option>
                         {% endfor %}
                     </select>
                     <label for="hqCity" class="form-label">Headquarters City:</label>
                     <select class="form-control" id="hqCity" name="hqCity" required>
-                        <option value="">Select a city</option>
+                        <option value="">Select Hq city</option>
                         {% for city in data.get('cities'):%}
                         <option value={{city}}>{{city}}</option>
                         {% endfor %}
@@ -75,20 +76,30 @@
                     </select>
 
                     <label for="founded" class="form-label">Founded:</label>
-                    <input type="number" class = "form-control" id="founded" name="founded" min="1800" max="2024" required>
+                    <input type="number" class = "form-control" id="founded" name="founded" min="1750" max="2100" step="1" pattern="\d{4}" required>
 
                     <label for="ownership" class="form-label">Type of Ownership:</label>
-                    <input type="text" class = "form-control" id="ownership" name="ownership" required>
+                    <select class = "form-control" id="ownership" name="ownership" required>
+                        <option value="">Select Ownership Type</option>
+                        <option value="Company - Private">Company - Private</option>
+                        <option value="Company - Public">Company - Public</option>
+                        <option value="Government">Government</option>
+                        <option value="Hospital">Hospital</option>
+                        <option value="Subsidiary or Business Segment">Subsidiary or Business Segment</option>
+                        <option value="College / University">College / University</option>
+                        <option value="School / School District">School / School District</option>
+                        <option value="Other Organization">Other Organization</option>
+                    </select>
 
                     <label for="industry" class="form-label">Industry:</label>
                     <input type="text" class = "form-control" id="industry" name="industry" required>
-
+                    
                     <label for="sector" class="form-label">Sector:</label>
-                    <input type="text" class = "form-control" id="sector" name="sector" required>
+                    <input type="text" class = "form-control" id="sector" name="sector" maxlength = "50" required>
 
                     <label for="revenue" class="form-label">Revenue:</label>
                     <select class="form-control" id="revenue" name="revenue">
-                        <option value="">Select a size</option>
+                        <option value="">Select Revenue Range</option>
                         <option value="Less than $1 million (USD)">Less than $1 million (USD)</option>
                         <option value="$1 to $5 million (USD)">$1 to $5 million (USD)</option>
                         <option value="$5 to $10 million (USD)">$5 to $10 million (USD)</option>
@@ -104,7 +115,7 @@
                     </select>
 
                     <label for="competitors" class="form-label">Competitors:</label>
-                    <input type="text" class = "form-control" id="competitors" name="competitors" required>
+                    <input type="text" class = "form-control" id="competitors" name="competitors" maxlength="100" required placeholder = "Competitor Companies (comma separated)">
             </div>
         </div>
         <br>
